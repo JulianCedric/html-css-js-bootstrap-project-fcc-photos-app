@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang='en'>
+  <head>
+    <title>Bunny Photos App</title>
+    <meta charset="'UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" crossorigin="anonymous"/>
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css" integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf" crossorigin="anonymous">
+  </head>
+  <body>
+    <div class='container-fluid'>
+      <div class='row'>
+        <!-- Login Form -->
+        <form class='login-form col-md-offset-4 col-md-4' id='loginForm' style="display: null">
+          <h1 class='text-center'>Login</h1>
+          <div class='form-group'>
+            <input class='form-control' type='text' placeholder='Username' id='username' required>
+          </div>
+          <div class='form-group'>
+            <input class='form-control' type='password' placeholder='Password' id='password' required>
+          </div>
+          <button class='btn btn-block btn-primary' type='submit'>Log in</button>
+          <hr>
+          <div>
+            <p class="text-center" id="signup">Don't have an account? <a href="#">Sign up</a></p>
+          </div>
+        </form>
+        <!-- Signup Form -->
+        <div class="signupForm" id="signupForm" style="display: none">
+          <form class='col-md-offset-4 col-md-4' id='signupForm' style='display: null'>
+            <h1 class='text-center'>Sign up</h1>
+            <div class='form-group'>
+              <input class='form-control' placeholder='Email' type='email' id='email' required>
+            </div>
+            <div class='form-group'>
+              <input class='form-control' placeholder='First Name' type='text' id='firstName' required>
+            </div>
+            <div class='form-group'>
+              <input class='form-control' placeholder='Last Name' type='text' id='lastName' required>
+            </div>
+            <div class='form-group'>
+              <input class='form-control' placeholder='Username' type='text' id='username-new' required>
+            </div>
+            <div class='form-group'>
+              <input class='form-control' placeholder='Password' type='password' id='password-new' required>
+            </div>
+            <button class='btn btn-block btn-primary' type='submit'>Sign up</button>
+            <hr>
+            <div>
+              <p class='text-center'>Have an account? <a href='#loginForm'>Log in</a></h4>
+            </div>
+          </form>
+        </div>
+        <!-- Dashboard -->
+        <div class='container.fluid'>
+          <div class='dashboard' id='dashboard' style='display: none'>
+            <h1 class='text-center'>Dashboard</h1>
+            <p class="text-center" id="greeting">Welcome, </p>
+            <hr>
+            <div class="row" id="photos-container">
+              <div class="text-center">
+                <img class='img-fluid' id='img-1' style='max-width: 20%;' src="https://static.boredpanda.com/blog/wp-content/uploads/2015/09/cute-bunnies-17__605.jpg" alt="cute bunny">
+                <p id="likes">Likes: 0</p>
+                <button class="btn btn-primary rounded float-left" id="like-btn"><i class='fas fa-thumbs-up'> Like</i></button>
+                <button class="btn btn-danger rounded float-right" id="delete-btn"><i class='fas fa-trash'> Delete</i></button>
+              </div>
+            </div>
+            <hr>
+            <div class='row'>
+              <div class='col-md-offset-4 col-md-4 text-center' id="logout">
+                <button class='btn btn-default' id='logoutButton'>Log out</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      let userData = [
+        {
+          id: 1,
+          email: null,
+          firstName: 'Lil',
+          lastName: 'JJ',
+          username: 'user1',
+          password: 'pass1'
+        },
+        {
+          id: 2,
+          email: 'user1@email.com',
+          firstName: 'Lil',
+          lastName: 'JJ',
+          username: 'user2',
+          password: 'pass2'
+        }];
+      
+      // app data 
+      let appData = [
+        {
+          id: 1,
+          imgUrl: 'https://static.boredpanda.com/blog/wp-content/uploads/2015/09/cute-bunnies-17__605.jpg',
+          likes: 0
+        }
+      ];
+      console.log('appData:', appData);
+
+      // user likes a photo
+      document.getElementById('like-btn').addEventListener('click', function(event){
+        console.log('user liked a photo');
+        for (let i = 0; i < appData.length; i++){
+          if (appData[i].id == 1){
+            appData[i].likes = appData[i].likes + 1;
+            document.getElementById('likes').innerText = 'Likes: ' + appData[i].likes;
+          }
+        }
+      });
+
+      // user deletes a photo
+      document.getElementById('delete-btn').addEventListener('click', function(event){
+        console.log('user deleted a photo');
+        console.log('event:', event);
+        for (let i = 0; i < appData.length; i++){
+          let index = appData.findIndex(obj => obj.id == 1);
+          console.log('index:', index);
+          // if (appData[i].id == 1){
+          //   appData.splice(i, 1);
+          //   console.log('appData:', appData);
+          // }
+
+          // temporary:
+          appData[0] = null;
+          document.getElementById('photos-container').style.display = 'none';
+          console.log('appData:', appData);
+        }
+      });
+
+      // user logs in
+      document.getElementById('loginForm').addEventListener('submit', function(event) {
+          event.preventDefault(); 
+          let username = document.getElementById('username').value;
+          let password = document.getElementById('password').value;
+          console.log('userData:', userData);
+
+          if (username == userData[0].username && password == userData[0].password) {
+            console.log('user logged in'); 
+            document.getElementById('username').value = '';
+            document.getElementById('password').value = '';
+            document.getElementById('loginForm').style.display = 'none';
+            document.getElementById('dashboard').style.display = 'block';
+            document.getElementById('greeting').innerText = 'Welcome, ' + userData[0].firstName + '!';
+          } else {
+            console.log('false');
+            if (username == userData[0].username && password !== userData[0].password) {
+              console.log('user entered wrong password');
+              alert('The username or password you entered was incorrect. Please try again.');
+              document.getElementById('username').value = '';
+              document.getElementById('password').value = '';
+              document.getElementById('username').focus();
+            } else {
+              console.log('username not found');
+              alert('The username or password you entered was incorrect. Please try again.');
+              document.getElementById('username').value = '';
+              document.getElementById('password').value = '';
+              document.getElementById('username').focus();
+            }
+          };
+          console.log('Username:', username, 'Password:', password);
+      });
+
+        document.getElementById('logoutButton').addEventListener('click', function(event) {
+        document.getElementById('loginForm').style.display = 'block';
+        document.getElementById('dashboard').style.display = 'none';
+        console.log('user logged out');
+      });
+
+      // user clicks signup button 
+      document.getElementById('signup').addEventListener('click', function(event) {
+        console.log('user clicked signup button');
+        document.getElementById('loginForm').style.display = 'none';
+        document.getElementById('signupForm').style.display = 'block';
+      });
+      // user signs up
+      document.getElementById('signupForm').addEventListener('submit', function(event) {
+        event.preventDefault();
+        let email = document.getElementById('email').value;
+        let firstName = document.getElementById('firstName').value;
+        let lastName = document.getElementById('lastName').value;
+        let username = document.getElementById('username-new').value;
+        let password = document.getElementById('password-new').value;
+        
+        console.log('new user data added to userData:')
+        console.log('  email:', email);
+        console.log('  firstName:', firstName);
+        console.log('  lastName:', lastName);
+        console.log('  username-new:', username);
+        console.log('  password-new:', password);
+        
+        let newUserData = {
+          id: 2,
+          email: email,
+          'First Name': firstName,
+          'Last Name': lastName,
+          'Username': username,
+          'Password': password,
+        };
+
+        userData.push(newUserData);
+        document.getElementById('email').value = '';
+        document.getElementById('firstName').value = '';
+        document.getElementById('lastName').value = '';
+        document.getElementById('username-new').value = '';
+        document.getElementById('password-new').value = '';
+        document.getElementById('signupForm').style.display = 'none';        
+        document.getElementById('dashboard').style.display = 'block';
+        document.getElementById('greeting').innerText = 'Welcome, ' + firstName + '!';
+
+        console.log("userData:", userData);
+      });
+    </script>
+  </body>
+</html>
